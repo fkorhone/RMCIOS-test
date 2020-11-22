@@ -30,5 +30,32 @@ int test_stage=0;
 #define TEST_ASSERT_EQUAL_CHAR(EXPECTED, GOT)  TEST_ASSERT_EQUAL_EX(EXPECTED, GOT, char, "'%c'")
 #define TEST_ASSERT_EQUAL_FLOAT(EXPECTED, GOT)  TEST_ASSERT_EQUAL_EX(EXPECTED, GOT, float, "%f")
 
+int test_results()
+{
+    // Result summary:
+    int passed = 0;
+    int failed = 0;
+    int unexecuted = 0;
+    int i;
+    for (i = 0; i < TOTAL_TEST_CASES; i++)
+    {
+        if (test_status[i] == PASS)
+        {
+            passed++;
+        }
+        if (test_status[i] == FAIL)
+        {
+            failed++;
+        }
+        if (test_status[i] == UNEXECUTED)
+        {
+            unexecuted++;
+        }
+    }
+    printf("\npassed:%d failed:%d unexecuted:%d total:%d\n", passed, failed, unexecuted, TOTAL_TEST_CASES);
+    if (failed > 0 || unexecuted > 0) return EXIT_FAILURE;
+    else return EXIT_SUCCESS ;
+}
+
 #endif // test_h
 
