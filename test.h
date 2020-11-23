@@ -1,6 +1,7 @@
 #ifndef test_h
 #define test_h
 
+#include <stdlib.h>
 #include <stdio.h>
 #define UNEXECUTED 0
 #define PASS 1
