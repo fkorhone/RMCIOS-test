@@ -40,6 +40,10 @@ int test_stage=0;
 
 #define INIT_TESTING(TEST_CASES) total_tests = TEST_CASES; char test_status_data[TEST_CASES] = {0}; test_status = test_status_data;
 
+#define TEST_CALLBACK(X) X.test_callback_id = __LINE__; X.test_call_index = 0; case __LINE__: if (callback_id != 0)
+#define TEST_CALLBACK_FIELDS int test_callback_id; int test_call_index; 
+#define TEST_CALLBACK_RUN(X) test_runner(X.test_callback_id); X.test_call_index++;
+
 char *test_status = 0;
 int total_tests = 0;
 
