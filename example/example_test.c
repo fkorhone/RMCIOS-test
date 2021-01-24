@@ -8,51 +8,28 @@ enum test_cases {
 
 typedef int FILE;
 
-struct {
-    FILE *returnv;
-    const char * filename;
-    const char * mode;
+#define TEST_CALLBACK_FIELDS int test_callback_id; int test_call_index; 
+#define TEST_CALLBACK_RUN(X) test_runner(X.test_callback_id); X.test_call_index++;
 
-    TEST_CALLBACK_FIELDS
-} fopen_callback; 
+#define TEST_FUNC_NAME fopen
+#define TEST_CALLBACK_NAME fopen_callback
+#define TEST_FUNC_RETURN_TYPE FILE *
+#define TEST_FUNC_PARAMS PARAM(const char *, filename) SEP\
+                         PARAM(const char *, mode)
+#include "callback_mock_template.h"
 
+#define TEST_FUNC_NAME printf
+#define TEST_CALLBACK_NAME printf_callback
+#define TEST_FUNC_RETURN_TYPE int
+#define TEST_FUNC_PARAMS PARAM(const char *, format)
+#include "callback_mock_template.h"
 
-FILE *fopen (const char * filename, const char * mode)
-{
-    fopen_callback.filename = filename;
-    fopen_callback.mode = mode;
-    TEST_CALLBACK_RUN(fopen_callback);
-    return fopen_callback.returnv;
-}
-
-struct {
-    int returnv;
-    const char * format;
-    TEST_CALLBACK_FIELDS
-} printf_callback; 
-
-
-int printf ( const char * format)
-{
-    printf_callback.format = format;
-    TEST_CALLBACK_RUN(printf_callback);
-    return printf_callback.returnv;
-}
-
-struct {
-    int returnv;
-    FILE *fp;
-    const char * format;
-    TEST_CALLBACK_FIELDS
-} fprintf_callback; 
-
-int fprintf (FILE *fp, const char * format)
-{
-    fprintf_callback.fp = fp;
-    fprintf_callback.format = format;
-    TEST_CALLBACK_RUN(fprintf_callback);
-    return fprintf_callback.returnv;
-}
+#define TEST_FUNC_NAME fprintf
+#define TEST_CALLBACK_NAME fprintf_callback
+#define TEST_FUNC_RETURN_TYPE int
+#define TEST_FUNC_PARAMS PARAM(FILE *, fp) SEP\
+                         PARAM(const char *, format)
+#include "callback_mock_template.h"
 
 #include "example.c"
 
