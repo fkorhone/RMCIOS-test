@@ -33,7 +33,7 @@ void test_runner(int run_location, int count);
 
 #define TEST_ASSERT_EQUAL(EXPECTED, GOT) if (EXPECTED != GOT){ test_data.test_status[test_index] = FAIL; \
                                                test_printf( "FAILED: %s:%d %s.%s "  #EXPECTED " != " #GOT " %s\n",__FILE__ , __LINE__, suite_label, test_label, test_description); } \
-                                         else { if(test_data.test_status[test_index] != FAIL) test_status[test_index] = PASS; \
+                                         else { if(test_data.test_status[test_index] != FAIL) test_data.test_status[test_index] = PASS; \
                                                test_printf( "PASSED: %s:%d %s.%s\n",__FILE__ , __LINE__, suite_label, test_label); } 
 
 #define TEST_ASSERT_EQUAL_EX(EXPECTED, GOT, CAST_TO, PRINT_TYPE) if ((CAST_TO)EXPECTED != (CAST_TO)GOT){ test_data.test_status[test_index] = FAIL; \

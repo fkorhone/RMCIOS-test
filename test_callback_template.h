@@ -5,7 +5,7 @@ Uses set of macros to as parameters filled in the template:
 
 TEST_FUNC_NAME - Name of function to create a stub 
 TEST_CALLBACK_NAME - Name of the callback parameter and state data structure
-TEST_FUNC_RETURN_TYPE - Return type from the function
+TEST_FUNC_RETURN_TYPE - Return type from the function. Undef for "void" return types.
 TEST_FUNC_PARAMS - Function parameters. Each parameter is specified with PARAM(TYPE, NAME) -macro..
                    Parameters need to be separated using SEP -macro
 
@@ -33,7 +33,7 @@ TEST_RUNNER
             {
                 TEST_ASSERT_EQUAL_STR(fopen_callback.filename, "test.txt")
                 TEST_ASSERT_EQUAL_STR(fopen_callback.mode, "w")
-                fopen_callback.returnv = 0;
+                fopen_callback.return_value = 0;
                 return;
             }
             int returnv = fopen("test.txt", "w");
@@ -56,29 +56,38 @@ int main(void)
 #define PARAM(TYPE, NAME) TYPE NAME;
 
 struct {
-    TEST_FUNC_RETURN_TYPE returnv;
+#ifdef TEST_FUNC_RETURN_TYPE
+    TEST_FUNC_RETURN_TYPE return_value;
+#endif
     TEST_FUNC_PARAMS
-    int test_callback_id; 
-    int test_call_index; 
-} TEST_CALLBACK_NAME ; 
+    int test_callback_id;
+    int test_call_index;
+} TEST_CALLBACK_NAME ;
 
 #undef SEP
 #define SEP ,
 #undef PARAM
 #define PARAM(TYPE, NAME) TYPE NAME
+
+#ifdef TEST_FUNC_RETURN_TYPE
 TEST_FUNC_RETURN_TYPE TEST_FUNC_NAME ( TEST_FUNC_PARAMS )
+#else
+void TEST_FUNC_NAME ( TEST_FUNC_PARAMS )
+#endif
 {
 #undef SEP
 #define SEP
 #undef PARAM
 #define PARAM(TYPE, NAME) TEST_CALLBACK_NAME.NAME = NAME;
     TEST_FUNC_PARAMS
- 
     test_runner(TEST_CALLBACK_NAME.test_callback_id, 0); 
     TEST_CALLBACK_NAME.test_call_index++;
-    return TEST_CALLBACK_NAME.returnv;
+#ifdef TEST_FUNC_RETURN_TYPE
+    return TEST_CALLBACK_NAME.return_value;
+#else
+    return;
+#endif
 }
-
 #undef TEST_FUNC_NAME
 #undef TEST_CALLBACK_NAME 
 #undef TEST_FUNC_RETURN_TYPE
