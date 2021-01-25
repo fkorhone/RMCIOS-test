@@ -2,7 +2,18 @@
 Testing framework/abstraction layer
 
 ## Test Callback Template
-test_callbach_template"
+test_callbach_template.h
+
+Uses set of macros to as parameters filled in the template. 
+Creates a stub function that assigns parameters to a structure and calls test runner. Gives callback location (case id) to the test runner. Test runner will jump to the callback case and access parameters from the callback structure. 
+
+Macros used in the template header:
+* TEST_FUNC_NAME - Name of function to create a stub 
+* TEST_CALLBACK_NAME - Name of the callback parameter and state data structure
+* TEST_FUNC_RETURN_TYPE - Return type from the function. Undef for "void" return types.
+* TEST_FUNC_PARAMS - Function parameters. Each parameter is specified with PARAM(TYPE, NAME) -macro.
+                   Parameters need to be separated using SEP -macro
+
 ## Example
 
 ### Code to test
