@@ -78,7 +78,7 @@ TEST_RUNNER
             {
                 TEST_ASSERT_EQUAL_STR(fopen_callback.filename, "test.txt")
                 TEST_ASSERT_EQUAL_STR(fopen_callback.mode, "w")
-                fopen_callback.returnv = 0;
+                fopen_callback.return_value = 0;
                 return;
             }
             TEST_CALLBACK(printf_callback)
@@ -96,7 +96,7 @@ TEST_RUNNER
             {
                 TEST_ASSERT_EQUAL_STR(fopen_callback.filename, "test.txt")
                 TEST_ASSERT_EQUAL_STR(fopen_callback.mode, "w")
-                fopen_callback.returnv = 56;
+                fopen_callback.return_value = 56;
                 return;
             }
     
